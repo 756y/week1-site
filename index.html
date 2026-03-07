@@ -4,6 +4,121 @@
 <head>
     <meta charset="utf-8" />
     <title>CSAI News</title>
+
+    <style>
+        body {
+            font-family: "Noto Sans TC", sans-serif;
+            margin: 0;
+            background: #f5f7fb;
+        }
+
+        /* header */
+        header {
+            background: linear-gradient(135deg,
+                    #FFD306 0%,
+                    #40806b 23%,
+                    #008bb5 40%,
+                    #008bb5 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        /* nav menu */
+        .menu {
+            background: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu li {
+            margin: 0 20px;
+        }
+
+        .menu a {
+            display: block;
+            padding: 15px 0;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .menu a:hover {
+            color: #2a5298;
+        }
+
+        /* main content */
+
+        main {
+            max-width: 900px;
+            margin: auto;
+            padding: 30px 20px;
+        }
+
+        h2 {
+            border-left: 6px solid #008bb5;
+            padding-left: 10px;
+        }
+
+        /* article card */
+
+        article {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        article:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+        }
+
+        article h3 {
+            margin-top: 0;
+        }
+
+        time {
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* read more button */
+
+        article a {
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+            background: #008bb5;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        article a:hover {
+            background: #1e3c72;
+        }
+
+        /* footer */
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #222;
+            color: #aaa;
+            margin-top: 40px;
+        }
+    </style>
 </head>
 
 <body>
