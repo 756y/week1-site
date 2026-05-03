@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <title>匯率轉換工具</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h2>💱 匯率轉換工具</h2>
+
+    <!-- 金額輸入 -->
+    <input type="number" id="amount" placeholder="輸入金額">
+
+    <!-- 貨幣選擇區 -->
+    <div class="select-group">
+
+      <!-- 來源貨幣 -->
+      <select id="fromCurrency"></select>
+
+      <!-- 交換按鈕，點擊後會交換來源與目標貨幣 -->
+      <button id="swapBtn">⇄</button>
+
+      <!-- 目標貨幣 -->
+      <select id="toCurrency"></select>
+
+    </div>
+
+    <!-- 點擊後會呼叫 API 進行匯率查詢 -->
+    <button id="convertBtn">轉換</button>
+
+    <!-- 結果顯示區 -->
+    <p id="result"></p>
+
+    <!-- 顯示 API 回傳的匯率日期 -->
+    <p id="date"></p>
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+
+</html>
