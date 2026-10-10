@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>研究所考試｜16 週讀書計畫</title>
+<style>
+:root{--bg:#f5f7fb;--panel:#fff;--ink:#202737;--muted:#687386;--line:#e0e6ef;--blue:#4263eb;--blue2:#edf1ff;--green:#188765;--greenbg:#e8f7f1;--orange:#b96a13;--orangebg:#fff4e5;--shadow:0 8px 26px rgba(30,45,80,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;line-height:1.6}
+header{background:linear-gradient(135deg,#263b80,#526fe8);color:white;padding:28px 20px 24px} .hero{max-width:1120px;margin:auto}
+.kicker{font-size:12px;letter-spacing:.12em;opacity:.8;font-weight:700}h1{font-size:clamp(25px,4vw,36px);line-height:1.25;margin:8px 0}header p{margin:8px 0 0;max-width:720px;color:#e9edff}
+.wrap{max-width:1120px;margin:22px auto;padding:0 16px 48px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:-4px}.stat,.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}.stat{padding:14px 16px}.stat small{display:block;color:var(--muted)}.stat strong{font-size:22px}
+.progress{height:8px;background:#e9edf5;border-radius:20px;overflow:hidden;margin-top:8px}.progress>div{height:100%;width:0;background:var(--green);transition:width .2s}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:20px 0 14px}.controls label{color:var(--muted);font-size:14px}select,button{font:inherit;border:1px solid var(--line);border-radius:10px;padding:9px 12px;background:white;color:var(--ink)}button{cursor:pointer;font-weight:650}button.primary{background:var(--blue);color:white;border-color:var(--blue)}button:hover{filter:brightness(.97)}
+.weeknav{display:flex;gap:8px;overflow-x:auto;padding:2px 1px 10px}.weeknav button{white-space:nowrap;min-width:68px}.weeknav button.active{background:var(--blue2);border-color:#a9b8ff;color:#2946bc}
+.panel{padding:20px;margin-top:12px}.week-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}.week-head h2{margin:0;font-size:23px}.week-head p{margin:5px 0;color:var(--muted)}.tag{font-size:12px;padding:4px 9px;border-radius:20px;background:var(--blue2);color:#2f49b5;font-weight:700;display:inline-block}
+.subjects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}.subject{border:1px solid var(--line);border-radius:12px;padding:14px;min-width:0}.subject h3{font-size:15px;margin:0 0 10px;display:flex;align-items:center;gap:8px}.dot{width:9px;height:9px;border-radius:50%;display:inline-block}.math .dot{background:#8264df}.software .dot{background:#2479ce}.hardware .dot{background:#e29a2f}
+.day{border-top:1px solid var(--line);padding:10px 0}.day:first-of-type{border-top:0}.day-title{display:flex;gap:8px;align-items:flex-start}.day-title input{margin-top:5px;accent-color:var(--green);width:16px;height:16px;flex-shrink:0}.day-title strong{font-size:13px;white-space:nowrap}.day-title span{font-size:14px;font-weight:650}.topics{font-size:13px;color:#4e5a6d;margin:4px 0 0 24px}.unit-hardware{color:var(--orange)!important}.unit-software{color:var(--blue)!important}.unit-review{color:var(--muted)!important}.hint{margin-top:16px;padding:12px 14px;background:#f7f9ff;border-radius:10px;border:1px solid #e3e9ff;font-size:13px;color:#47536a}
+.phase{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}.phase div{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}.phase b{display:block;font-size:13px}.phase span{font-size:12px;color:var(--muted)}
+.footer{color:var(--muted);font-size:12px;text-align:center;margin-top:24px}
+@media(max-width:760px){.subjects{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.phase{grid-template-columns:repeat(2,1fr)}.panel{padding:15px}.week-head h2{font-size:21px}}
+@media print{body{background:white}.controls,.weeknav,button{display:none!important}.panel,.stat{box-shadow:none;break-inside:avoid}.subjects{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<header><div class="hero"><div class="kicker">STUDY PLANNER · 16 WEEKS</div><h1>研究所考試｜16 週讀書計畫</h1><p>線性代數、離散數學、資料結構、演算法、作業系統、計算機組織。以交大＋中央考古統計列出的核心單元為主，搭配單元題、錯題回顧與後期模考。</p></div></header>
+<main class="wrap">
+<div class="stats">
+ <div class="stat"><small>已完成項目</small><strong id="doneCount">0</strong><div class="progress"><div id="progressBar"></div></div></div>
+ <div class="stat"><small>目前週次</small><strong id="currentWeek">第 1 週</strong><small>從第 1 週開始，依實際進度切換</small></div>
+ <div class="stat"><small>規劃原則</small><strong>觀念 → 題目 → 錯題</strong><small>不要只看講義，當天就做對應考古題</small></div>
+</div>
+<div class="controls">
+<label for="weekSelect">跳至週次</label><select id="weekSelect"></select>
+<button class="primary" id="todayBtn">開啟目前週</button><button id="printBtn">列印／存成 PDF</button><button id="resetBtn">清除勾選</button>
+</div>
+<div class="weeknav" id="weekNav"></div>
+<section class="panel" id="weekPanel" aria-live="polite"></section>
+<section class="panel">
+<h2 style="margin:0 0 10px;font-size:18px">16 週整體節奏</h2>
+<div class="phase">
+<div><b>第 1–4 週｜核心重建</b><span>建立觀念鏈、單元題練習</span></div>
+<div><b>第 5–8 週｜第二輪＋考古</b><span>補核心缺口，逐年拆題分類</span></div>
+<div><b>第 9–12 週｜混合題訓練</b><span>跨章節限時練習、整理錯題</span></div>
+<div><b>第 13–16 週｜模考與補洞</b><span>完整試卷、時間分配、必拿分</span></div>
+</div>
+<p style="font-size:13px;color:var(--muted);margin-bottom:0">提醒：目前第 1–4 週依先前排定的具體單元；第 5–16 週是延續相同考古優先順序的規劃框架，可依實際做題結果調整。</p>
+</section>
+<div class="footer">勾選進度會保存在此瀏覽器的本機儲存空間。若更換瀏覽器或清除網站資料，勾選紀錄可能不會保留。</div>
+</main>
+<script>
+const weeks = [
+{title:"打地基：核心觀念重新接起來",goal:"矩陣、集合關係、基礎資料結構、ISA 與 CPU 效能",days:[
+["Day 1","線代","矩陣運算、矩陣性質、矩陣乘法、轉置","軟體","時間／空間複雜度、Array、Linked List、Amortized Cost"],
+["Day 2","離散","集合運算、集合關係、命題、邏輯運算","硬體","ISA、data transfer、lw/sw、control instruction、beq/j、logical instruction、constant"],
+["Day 3","線代","Ax=b、可解性、invertibility、LU decomposition、determinant","軟體","recursion trace、recurrence 基礎、Stack、infix/prefix/postfix、Queue"],
+["Day 4","離散","relation、equivalence relation、closure、function、1-1、onto","硬體","2's complement、signed arithmetic、floating point、execution time、CPI、speedup"],
+["Day 5","線代","subspace、linear independence、span、basis、dimension、direct sum","軟體","Binary Tree、BST、Heap、Disjoint Set"],
+["Day 6","離散","induction、recurrence relation、constant coefficient recurrence、recurrence application","硬體","single-cycle、multi-cycle、instruction execution、control"],
+["Day 7","回顧","本週矩陣／向量空間重點與錯題回顧","回顧","本週離散＋軟體／硬體錯題；補做未完成題目"]
+]},
+{title:"高頻題型：轉換、排序、Pipeline",goal:"把線代與離散基礎接到可考題型，開始練計算題",days:[
+["Day 8","線代","linear transformation、matrix representation、change of basis、Kernel、Image","軟體","Binary Search、Insertion Sort、Selection Sort、Bubble Sort"],
+["Day 9","離散","permutation、combination、pigeonhole principle、Stirling number","硬體","pipeline stages、pipeline performance、pipeline CPI"],
+["Day 10","線代","rank、nullity、Rank-Nullity、Kernel／Image 關係","軟體","Quick Sort、Merge Sort、Heap Sort、LSD Radix、Counting Sort"],
+["Day 11","離散","generating function、integer partition、用 generating function 解 recurrence","硬體","data dependency、data hazard、forwarding、hazard detection"],
+["Day 12","線代","eigenvalue、eigenvector、characteristic polynomial、similarity","軟體","Hashing、collision、overflow handling、Binary Search 題型"],
+["Day 13","離散","graph terminology、adjacency matrix/list、graph representation、isomorphism","硬體","control hazard、branch prediction、CPI、hazard 綜合題"],
+["Day 14","回顧","線代：矩陣→轉換→特徵值；離散：計數→遞迴","回顧","Sorting／Hashing 綜合考古題與錯題整理"]
+]},
+{title:"高頻核心：圖論、特徵值、Cache",goal:"圖論演算法要能手算流程，Cache 開始練位址拆解",days:[
+["Day 15","線代","diagonalization、similarity、PDP⁻¹、eigenvalue／eigenvector 關係","軟體","DFS、BFS、adjacency matrix/list、graph traversal"],
+["Day 16","離散","Euler path/circuit、Hamilton path/circuit、connected graph、spanning tree","硬體","memory hierarchy、cache basics、address structure、block／word／offset"],
+["Day 17","線代","可對角化條件、similarity、diagonalization applications、Markov chain","軟體","Topological Sort、DAG、MST、Kruskal／Prim 類型"],
+["Day 18","離散","planar graph、graph coloring、Dijkstra、Warshall","硬體","direct／set-associative cache、tag/index/offset、cache calculation、multilevel cache"],
+["Day 19","線代","inner product、orthogonality、orthogonal complement、Gram-Schmidt","軟體","Dijkstra、Bellman-Ford、Floyd-Warshall、shortest path 綜合"],
+["Day 20","離散","recurrence、generating function、graph representation、shortest path","硬體","AMAT、cache miss、multilevel cache、CPI 與 memory hierarchy"],
+["Day 21","回顧","Eigen／Diagonalization＋Graph／Recurrence 題型整理","回顧","DFS/BFS→MST→Dijkstra→Bellman-Ford→Floyd 綜合考古題"]
+]},
+{title:"拉分核心：正交化、DP、Virtual Memory、OS",goal:"把常考章節串成完整題型，OS 從 Process 與 Scheduling 開始",days:[
+["Day 22","線代","projection、orthogonal complement、projection matrix","硬體","virtual address、physical address、page、page table、address translation"],
+["Day 23","離散","partial order、total order、Hasse diagram","軟體","Dynamic Programming、optimal substructure、overlapping subproblem、Maximum Subarray"],
+["Day 24","線代","least squares、normal equation、orthogonal projection、QR／Gram-Schmidt 關係","硬體","TLB、page table、TLB reach、EMAT"],
+["Day 25","離散","propositional logic、logic equivalence、graph coloring、Dijkstra／Warshall","軟體","0/1 Knapsack、Knapsack、Matrix Chain Multiplication"],
+["Day 26","線代","orthogonal matrix、orthogonal diagonalization、symmetric matrix、PDPᵀ","硬體","Process、process state、dispatcher、context switch、fork／exec／exit／wait"],
+["Day 27","離散","recurrence、generating function、combination、pigeonhole","軟體","LCS、KMP、DP 綜合題"],
+["Day 28","回顧","線代與離散核心公式、定義、易錯題回顧","硬體","scheduling criteria、FCFS、SJF、Priority、Round Robin、EDF"]
+]},
+{title:"第二輪：補齊核心樹與演算法",goal:"把第一輪做錯的單元重新學會，擴充重要樹與演算法",days:[
+["Day 29","線代","特徵值／特徵向量計算、特徵多項式、重根與可對角化判斷","軟體","AVL Tree、rotation、BST 操作與複雜度"],
+["Day 30","離散","遞迴式建立、解常係數遞迴、初始條件","硬體","Thread、user/kernel thread、multithreading model"],
+["Day 31","線代","Gram-Schmidt、QR decomposition、orthogonal projection 計算","軟體","Red-Black Tree、B-tree、B+ tree 基本性質與操作"],
+["Day 32","離散","關係的 reflexive／symmetric／transitive、equivalence class、closure","硬體","CPU pipeline hazard 綜合：forwarding、stall、branch penalty"],
+["Day 33","線代","determinant、inverse、rank、線性方程組混合題","軟體","Huffman coding、optimal prefix code、heap 操作"],
+["Day 34","離散","counting、permutation／combination、pigeonhole 題型","硬體","cache mapping／replacement／write policy 題型回顧"],
+["Day 35","回顧","整理線代與離散第一、二輪錯題","回顧","樹、排序、Pipeline／Cache 分類題練習"]
+]},
+{title:"第二輪：OS 同步與記憶體",goal:"把 OS 高頻核心補齊，避免只會背定義、不會追流程",days:[
+["Day 36","線代","線性轉換、Kernel／Image、Rank-Nullity 混合題","軟體","sorting 複雜度比較、穩定性、in-place、trace code"],
+["Day 37","離散","graph traversal、Euler／Hamilton、spanning tree 題型","硬體","process scheduling、waiting／turnaround／response time 計算"],
+["Day 38","線代","least squares、normal equation、projection 混合題","軟體","Disjoint Set、union-find、path compression、union by rank"],
+["Day 39","離散","graph coloring、planar graph、poset／Hasse diagram","硬體","critical section、race condition、mutex、semaphore、spinlock"],
+["Day 40","線代","positive definite、symmetric matrix、orthogonal diagonalization","軟體","DP：Knapsack、Matrix Chain、LCS、Maximum Subarray"],
+["Day 41","離散","logic equivalence、induction、recurrence 綜合題","硬體","deadlock、RAG、四個必要條件、prevention／avoidance／detection"],
+["Day 42","回顧","數學弱點題重做，不看解答完整寫一次","回顧","同步／Deadlock 題型＋錯題回顧"]
+]},
+{title:"第二輪：虛擬記憶體與演算法設計",goal:"從公式與定義走向完整計算、演算法選擇",days:[
+["Day 43","線代","SVD、spectral decomposition、positive definite 基本題","軟體","KMP prefix/failure function、字串比對"],
+["Day 44","離散","生成函數、整數分拆、Stirling number 題型","硬體","paging、segmentation、fragmentation、address translation"],
+["Day 45","線代","矩陣分解、LU、determinant、Ax=b 混合題","軟體","Divide and Conquer、recurrence analysis、Maximum Subarray"],
+["Day 46","離散","graph algorithm 與複雜度、Dijkstra／Warshall 題型","硬體","page fault、page replacement：FIFO／OPT／LRU"],
+["Day 47","線代","全章計算題：特徵值、對角化、正交化、least squares","軟體","Greedy：activity selection、MST、Knapsack 差異"],
+["Day 48","離散","證明題基礎：induction、反證、集合與關係簡證","硬體","thrashing、working set、TLB、EMAT 綜合"],
+["Day 49","回顧","數學必拿分題限時練習","回顧","DP／Greedy／字串／VM 分類考古題"]
+]},
+{title:"考古題第一輪：按科目與單元拆題",goal:"開始提高考古題比重，不必一開始就整份硬寫",days:[
+["Day 50","線代","交大線代考古：矩陣、Ax=b、向量空間分類題","軟體","交大 DS：複雜度、List、Stack／Queue、Tree 分類題"],
+["Day 51","離散","交大離散：集合、關係、計數、遞迴分類題","硬體","交大計組：ISA、signed arithmetic、performance 分類題"],
+["Day 52","線代","中央線代：矩陣、向量空間、線性轉換分類題","軟體","中央 DS：樹、Heap、排序、Hashing 分類題"],
+["Day 53","離散","中央離散：關係、遞迴、Graph、Logic 分類題","硬體","中央計組：Pipeline／Hazard 分類題"],
+["Day 54","線代","兩校特徵值／對角化題目對照，整理常見問法","軟體","兩校 Graph：DFS／BFS、MST、Shortest Path 題目"],
+["Day 55","離散","兩校計數／遞迴／圖論混合題","硬體","Cache／AMAT／VM 計算題"],
+["Day 56","回顧","本週考古錯題依原因分類：觀念／計算／讀題","回顧","完成錯題二刷；建立各科高頻題清單"]
+]},
+{title:"考古題第二輪：限時單元組合",goal:"練速度與題目辨識，避免單一章節才會做",days:[
+["Day 57","線代","線代混合組：矩陣＋Rank＋Eigen，限時作答","軟體","Sorting＋Hashing＋Tree 混合題"],
+["Day 58","離散","Discrete 混合組：Counting＋Recurrence＋Relations","硬體","OS：Process／Scheduling／Thread 混合題"],
+["Day 59","線代","Orthogonality＋Projection＋Least Squares 限時組","軟體","Graph：MST＋Shortest Path＋Topological 混合題"],
+["Day 60","離散","Graph＋Logic＋Poset 混合組","硬體","OS：Synchronization＋Deadlock 混合題"],
+["Day 61","線代","挑一份較弱年度線代題，限時完成後訂正","軟體","DP＋KMP＋Complexity 混合題"],
+["Day 62","離散","挑一份較弱年度離散題，限時完成後訂正","硬體","計組：Pipeline＋Cache＋VM 混合題"],
+["Day 63","回顧","數學錯題重做，遮住解答寫出步驟","回顧","軟硬體錯題重做，記錄失分原因"]
+]},
+{title:"跨章節訓練：速度與正確率",goal:"每次練習後都要知道錯在哪，不只看分數",days:[
+["Day 64","線代","線代高頻題限時組：矩陣、特徵值、正交化","軟體","DS 核心題限時組：複雜度、Tree、Sorting"],
+["Day 65","離散","遞迴、計數、關係題限時組","硬體","計組數值表示＋效能＋Pipeline 限時組"],
+["Day 66","線代","挑 2 個最弱章節補觀念，接著做考古題","軟體","Graph 全套限時題＋錯題整理"],
+["Day 67","離散","Graph、Logic、Poset 複合題","硬體","Cache／AMAT／VM 計算題，練公式與位址拆解"],
+["Day 68","線代","線代證明／觀念題：先寫已知、目標與可用定理","軟體","DP／Greedy／Complexity 題型辨識"],
+["Day 69","離散","證明與計算混合：induction、relation、graph","硬體","OS Memory：paging、replacement、thrashing、EMAT"],
+["Day 70","回顧","一週錯題再測，統計正確率與耗時","回顧","挑各科最常錯的 10 題重做"]
+]},
+{title:"模考準備：逐科限時整卷",goal:"開始整份試卷，檢查時間分配與題目取捨",days:[
+["Day 71","線代","一份線代考古限時作答＋逐題訂正","軟體","資料結構／演算法半份限時卷"],
+["Day 72","離散","一份離散考古限時作答＋逐題訂正","硬體","計組半份限時卷"],
+["Day 73","線代","重做前一份線代失分題，補回觀念缺口","軟體","OS 半份限時卷＋同步／Deadlock 訂正"],
+["Day 74","離散","重做前一份離散失分題，補回觀念缺口","硬體","Pipeline／Cache／VM 綜合題"],
+["Day 75","線代","線代第二份考古限時作答","軟體","DS／Algo 第二份半卷"],
+["Day 76","離散","離散第二份考古限時作答","硬體","OS／計組錯題二刷"],
+["Day 77","回顧","統整模考：必拿分、耗時題、放棄題","回顧","更新考場作答順序與時間配置"]
+]},
+{title:"模考週：整份考古＋深度檢討",goal:"逐步接近正式考試節奏，檢討比刷題數更重要",days:[
+["Day 78","數學","線代＋離散分科限時；記錄各單元得分","軟體","DS／Algo 整份或依實際考試時間限時"],
+["Day 79","數學","前日數學錯題訂正與重做","硬體","計組整份或依實際考試時間限時"],
+["Day 80","數學","數學薄弱單元補強：Eigen／Recurrence／Graph 擇弱","軟體","軟體整份考古；練題目取捨"],
+["Day 81","數學","線代完整考古卷，計時作答","硬體","OS 整份考古；訂正 Process／Sync／Memory"],
+["Day 82","數學","離散完整考古卷，計時作答","軟體","Graph／DP／Tree 錯題重做"],
+["Day 83","數學","數學公式與常見陷阱整理","硬體","Cache／AMAT／VM／Deadlock 高頻題再測"],
+["Day 84","回顧","本週模考失分分析，調整下週策略","回顧","所有錯題標記為：必補／可再練／暫放"]
+]},
+{title:"考場策略：穩住基本分",goal:"減少粗心與卡題，建立先拿分再攻難題的流程",days:[
+["Day 85","線代","矩陣、rank、Ax=b 基本題快速測驗","軟體","複雜度、List、Stack／Queue、Tree 基本題"],
+["Day 86","離散","集合、命題、關係、函數基本題","硬體","ISA、signed arithmetic、CPI 基本題"],
+["Day 87","線代","Eigen／Diagonalization 必考計算題","軟體","Sorting、Hashing、Heap 常見手算題"],
+["Day 88","離散","Counting、Recurrence 常見題型","硬體","Pipeline hazard、forwarding、branch penalty"],
+["Day 89","線代","Gram-Schmidt、Projection、Least Squares 基本題","軟體","DFS／BFS、MST、Shortest Path 基本題"],
+["Day 90","離散","Graph、Logic、Poset 必拿分題","硬體","Cache、AMAT、page table、TLB 基本計算"],
+["Day 91","回顧","製作數學最後複習清單：公式、定理、易錯點","回顧","製作軟硬體最後複習清單"]
+]},
+{title:"最後補洞：弱點集中突破",goal:"只補會影響分數的缺口，不無限制開新章節",days:[
+["Day 92","線代","依錯題統計選最弱 2 單元，觀念＋題目","軟體","依錯題統計選最弱 2 單元，考古重做"],
+["Day 93","離散","依錯題統計選最弱 2 單元，觀念＋題目","硬體","依錯題統計選最弱 2 單元，考古重做"],
+["Day 94","線代","重做歷次錯題中最常錯的計算題","軟體","重做 Graph／DP／Tree 易錯題"],
+["Day 95","離散","重做遞迴、計數、Graph／Logic 易錯題","硬體","重做 Pipeline／Cache／VM 易錯題"],
+["Day 96","線代","定理條件與反例整理；練讀題辨識","軟體","複雜度、演算法正確性與步驟追蹤"],
+["Day 97","離散","證明題架構：已知、欲證、方法、關鍵步驟","硬體","OS 同步、Deadlock、Scheduling 快速複習"],
+["Day 98","回顧","弱點單元二次測驗，確認是否真的補起來","回顧","更新最後階段必看清單"]
+]},
+{title:"最後模考：維持實戰感",goal:"保持作答節奏，避免模考後才發現時間分配問題",days:[
+["Day 99","數學","線代限時卷；先易後難，記錄卡題時間","軟體","軟體限時卷；標記猶豫題與猜題"],
+["Day 100","數學","訂正 Day 99，重做所有失分題","硬體","計組限時卷＋訂正"],
+["Day 101","數學","離散限時卷；證明題控制投入時間","軟體","OS 限時卷＋訂正"],
+["Day 102","數學","訂正 Day 101，重做所有失分題","硬體","硬體錯題二刷"],
+["Day 103","數學","線代＋離散混合短卷，練切換科目","軟體","排序／Graph／DP 混合短卷"],
+["Day 104","數學","數學公式、定義、常見題型口頭回想","硬體","OS／計組必拿分清單口頭回想"],
+["Day 105","回顧","模考成績與錯題統計，確認最後補強項","回顧","準備最後一週的精簡複習清單"]
+]},
+{title:"考前整理：高頻單元最後一輪",goal:"不再大幅開新內容，維持熟悉度與信心",days:[
+["Day 106","線代","矩陣、Ax=b、rank、eigen、diagonalization","軟體","Complexity、Tree、Sorting、Hashing"],
+["Day 107","離散","集合、關係、計數、遞迴、生成函數","硬體","ISA、signed arithmetic、performance、Pipeline"],
+["Day 108","線代","Gram-Schmidt、Projection、Least Squares、SVD 基礎","軟體","DFS／BFS、MST、Shortest Path、DP"],
+["Day 109","離散","Graph、Logic、Poset、Induction 易錯點","硬體","Cache、AMAT、VM、TLB、page replacement"],
+["Day 110","線代","重做最重要的線代錯題，不開新題","軟體","重做最重要的軟體錯題"],
+["Day 111","離散","重做最重要的離散錯題，不開新題","硬體","重做最重要的硬體錯題"],
+["Day 112","總整理","檢查考試用品、考場策略、睡眠與交通；只看精簡筆記","總整理","停止高強度新題，保留熟悉感"]
+]}
+];
+const labels={math:"數學",software:"軟體",hardware:"硬體",review:"回顧"};
+let active=0;
+const nav=document.getElementById('weekNav'), sel=document.getElementById('weekSelect'), panel=document.getElementById('weekPanel');
+weeks.forEach((w,i)=>{let b=document.createElement('button');b.textContent=`第 ${i+1} 週`;b.addEventListener('click',()=>render(i));nav.appendChild(b);let o=document.createElement('option');o.value=i;o.textContent=`第 ${i+1} 週｜${w.title}`;sel.appendChild(o)});
+function key(w,d,s){return `study16-${w}-${d}-${s}`}
+function render(i){
+active=i;sel.value=i;[...nav.children].forEach((b,j)=>b.classList.toggle('active',j===i));
+let w=weeks[i];
+let html=`<div class="week-head"><div><span class="tag">第 ${i+1}／16 週</span><h2>${w.title}</h2><p>${w.goal}</p></div><div style="min-width:130px"><small style="color:var(--muted)">本週完成度</small><div class="progress"><div id="weekProgress"></div></div><small id="weekPercent" style="color:var(--muted)">0%</small></div></div><div class="subjects two-subjects">`;
+const cols=[
+ {id:'math',title:'數學（線代／離散）',labelIndex:1,topicIndex:2},
+ {id:'secondary',title:'軟體／硬體（依每日安排）',labelIndex:3,topicIndex:4}
+];
+cols.forEach(c=>{
+ html+=`<div class="subject ${c.id==='secondary'?'software':c.id}"><h3><span class="dot"></span>${c.title}</h3>`;
+ w.days.forEach((d,di)=>{
+  const unit=d[c.labelIndex]||'回顧';
+  const topic=d[c.topicIndex]||'當日複習與錯題整理';
+  const k=key(i,di,c.id);
+  const checked=localStorage.getItem(k)==='1';
+  html+=`<div class="day"><label class="day-title"><input type="checkbox" data-key="${k}" ${checked?'checked':''}><strong>${d[0]}</strong><span class="${unit==='硬體'?'unit-hardware':unit==='軟體'?'unit-software':unit==='回顧'?'unit-review':''}">${unit}</span></label><div class="topics">${topic}</div></div>`;
+ });
+ html+='</div>';
+});
+html+='</div><div class="hint"><b>當週執行方式：</b>先用講義快速回想觀念，再做該單元的交大／中央考古題；錯題標記原因（觀念不熟、計算錯、讀題錯、時間不夠），隔天先花 10–20 分鐘重做前一天錯題。第二欄會依每天安排顯示「軟體」或「硬體」，不會把數學單元混到其他科。</div>';
+panel.innerHTML=html;
+panel.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.addEventListener('change',()=>{localStorage.setItem(cb.dataset.key,cb.checked?'1':'0');updateProgress()}));
+updateProgress()
+}
+function updateProgress(){let all=document.querySelectorAll('input[type=checkbox][data-key]');let done=[...all].filter(x=>x.checked).length;let total=112*2;let saved=0;for(let i=0;i<weeks.length;i++)for(let d=0;d<7;d++)for(let s of ['math','secondary'])if(localStorage.getItem(key(i,d,s))==='1')saved++;document.getElementById('doneCount').textContent=`${saved} / ${total}`;document.getElementById('progressBar').style.width=`${saved/total*100}%`;let wdone=0;for(let d=0;d<7;d++)for(let s of ['math','secondary'])if(localStorage.getItem(key(active,d,s))==='1')wdone++;let pct=Math.round(wdone/14*100);let wp=document.getElementById('weekProgress');if(wp)wp.style.width=pct+'%';let p=document.getElementById('weekPercent');if(p)p.textContent=pct+'%'}
+sel.addEventListener('change',()=>render(Number(sel.value)));document.getElementById('todayBtn').addEventListener('click',()=>{let day=Math.floor((Date.now()-new Date('2026-10-12T00:00:00+08:00').getTime())/86400000);render(Math.max(0,Math.min(15,Math.floor(day/7))))});document.getElementById('printBtn').addEventListener('click',()=>window.print());document.getElementById('resetBtn').addEventListener('click',()=>{if(confirm('確定清除這份計畫的所有勾選紀錄？')){for(let i=0;i<weeks.length;i++)for(let d=0;d<7;d++)for(let s of ['math','secondary','software','hardware'])localStorage.removeItem(key(i,d,s));render(active)}});render(0);
+</script>
+</body></html>
